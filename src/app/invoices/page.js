@@ -16,7 +16,8 @@ export default function InvoicesPage() {
 
   const openInvoice = (invoice) => {
     localStorage.setItem("selected_invoice_id", invoice.id);
-    window.location.href = "/invoices";
+    // Note: Ensure this route is correct. Usually it's /invoice or /invoices/[id]
+    window.location.href = "/invoices"; 
   };
 
   const totalSales = invoices.reduce(
@@ -25,30 +26,33 @@ export default function InvoicesPage() {
   );
 
   return (
-    <div className="min-h-screen">
-      {/* Header - Responsive Padding & Text Size */}
-      <header className="border-b border-gray-200 bg-white px-4 py-4 sm:px-8 sm:py-5">
-        <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
-          Invoices
-        </h1>
-        <p className="mt-1 text-sm text-gray-500">
-          View and reprint your previous invoices.
-        </p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header - Full width background, centered content inside */}
+      <header className="border-b border-gray-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-8 sm:py-5">
+          <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
+            Invoices
+          </h1>
+          <p className="mt-1 text-sm text-gray-500">
+            View and reprint your previous invoices.
+          </p>
+        </div>
       </header>
 
-      {/* Main Content - Responsive Padding */}
-      <div className="p-4 sm:p-8">
-        {/* Stats - sm:grid-cols-2 for tablet view */}
+      {/* Main Content - Centered max-width for large screens */}
+      <div className="mx-auto max-w-7xl p-4 sm:p-8">
+        
+        {/* Stats - 1 col mobile, 2 col tablet+ */}
         <div className="mb-6 grid grid-cols-1 gap-4 sm:mb-8 sm:grid-cols-2 sm:gap-5">
           <div className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5">
             <div className="flex items-center justify-between">
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm text-gray-500">Total Invoices</p>
-                <p className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
+                <p className="mt-2 truncate text-xl font-bold text-gray-900 sm:text-2xl">
                   {invoices.length}
                 </p>
               </div>
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100">
+              <div className="ml-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100">
                 <Receipt size={21} />
               </div>
             </div>
@@ -58,7 +62,7 @@ export default function InvoicesPage() {
             <div className="flex items-center justify-between">
               <div className="min-w-0 flex-1">
                 <p className="text-sm text-gray-500">Total Sales</p>
-                <p className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl truncate">
+                <p className="mt-2 truncate text-xl font-bold text-gray-900 sm:text-2xl">
                   ₹
                   {totalSales.toLocaleString("en-IN", {
                     minimumFractionDigits: 2,
@@ -85,6 +89,7 @@ export default function InvoicesPage() {
             <EmptyInvoices />
           ) : (
             <div className="overflow-x-auto">
+              {/* whitespace-nowrap prevents text from breaking awkwardly on mobile */}
               <table className="w-full whitespace-nowrap">
                 <thead>
                   <tr className="border-b border-gray-200 bg-gray-50 text-left">

@@ -20,6 +20,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button,
@@ -29,6 +31,12 @@ input {
 
 button {
   cursor: pointer;
+}
+
+/* Prevent horizontal scroll on mobile (safety net) */
+html,
+body {
+  overflow-x: hidden;
 }
 
 
@@ -42,12 +50,13 @@ button {
     margin: 0;
   }
 
+  /* 1. Reset full page for printing */
   html,
   body {
     width: 80mm;
     margin: 0;
     padding: 0;
-    background: white;
+    background: white !important;
   }
 
   body {
@@ -55,14 +64,44 @@ button {
     print-color-adjust: exact;
   }
 
+  /* 2. Hide everything by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* 3. Show ONLY the invoice and its children */
+  .invoice,
+  .invoice * {
+    visibility: visible;
+  }
+
+  /* 4. Position invoice at top-left corner of the page */
+  .invoice {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    margin: 0 !important;
+    padding: 4mm !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: white !important;
+  }
+
+  /* 5. Hide print-utility classes (buttons, headers, etc.) */
   .no-print {
     display: none !important;
   }
 
-  .invoice {
-    width: 80mm !important;
+  /* 6. Remove any background colors on wrappers */
+  body > div,
+  body > div > div,
+  main {
+    background: white !important;
+    padding: 0 !important;
     margin: 0 !important;
-    padding: 4mm !important;
-    box-shadow: none !important;
+    margin-left: 0 !important;
+    padding-top: 0 !important;
   }
 }

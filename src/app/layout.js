@@ -12,10 +12,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <BillingProvider>
-          <div className="min-h-screen bg-[#f5f7fb]">
+          <div className="min-h-screen bg-gray-50">
             <Sidebar />
 
-            <main className="ml-64 min-h-screen">
+            {/* 
+              Mobile: pt-16 (fixed top bar ki height) aur koi left margin nahi
+              Desktop (lg): pt-0 aur ml-64 (sidebar ki width)
+            */}
+            <main className="min-h-screen pt-16 lg:pt-0 lg:ml-64">
               {children}
             </main>
           </div>

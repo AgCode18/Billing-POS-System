@@ -96,20 +96,25 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Header - Responsive Padding & Text */}
-      <header className="border-b border-gray-200 bg-white px-4 py-4 sm:px-8 sm:py-5">
-        <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
-          Products
-        </h1>
+    // 1. Added bg-gray-50 for consistency with other pages
+    <div className="min-h-screen bg-gray-50">
+      
+      {/* Header - Full width background, centered content inside */}
+      <header className="border-b border-gray-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-8 sm:py-5">
+          <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
+            Products
+          </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
-          Add and manage your products.
-        </p>
+          <p className="mt-1 text-sm text-gray-500">
+            Add and manage your products.
+          </p>
+        </div>
       </header>
 
-      {/* Main Content - Responsive Padding */}
-      <div className="p-4 sm:p-8">
+      {/* Main Content - Centered max-width for ultra-wide screens */}
+      <div className="mx-auto max-w-7xl p-4 sm:p-8">
+        
         {/* Add Product */}
         <div className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6">
           <div className="mb-4 flex items-center gap-3 sm:mb-6">
@@ -148,7 +153,7 @@ export default function ProductsPage() {
                     name: e.target.value,
                   })
                 }
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-gray-400"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
               />
             </div>
 
@@ -169,7 +174,7 @@ export default function ProductsPage() {
                     price: e.target.value,
                   })
                 }
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-gray-400"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
               />
             </div>
 
@@ -189,7 +194,7 @@ export default function ProductsPage() {
                     quantity: e.target.value,
                   })
                 }
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-gray-400"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-gray-400 focus:ring-1 focus:ring-gray-400"
               />
             </div>
 
@@ -197,7 +202,7 @@ export default function ProductsPage() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white hover:bg-gray-800 sm:flex-1"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800 sm:flex-1"
               >
                 <Plus size={18} />
                 {editingId ? "Update Product" : "Add Product"}
@@ -207,7 +212,7 @@ export default function ProductsPage() {
                 <button
                   type="button"
                   onClick={cancelEdit}
-                  className="w-full rounded-xl border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 sm:w-auto"
+                  className="w-full rounded-xl border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 sm:w-auto"
                 >
                   Cancel
                 </button>
@@ -228,7 +233,7 @@ export default function ProductsPage() {
           </div>
 
           {products.length === 0 ? (
-            <div className="py-16 text-center">
+            <div className="py-16 text-center sm:py-20">
               <Package size={35} className="mx-auto text-gray-300" />
 
               <p className="mt-3 text-sm text-gray-500">
@@ -237,7 +242,7 @@ export default function ProductsPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              {/* whitespace-nowrap prevents text from breaking awkwardly */}
+              {/* whitespace-nowrap prevents text from breaking awkwardly on mobile */}
               <table className="w-full whitespace-nowrap">
                 <thead>
                   <tr className="border-b border-gray-200 bg-gray-50 text-left">
@@ -303,7 +308,8 @@ export default function ProductsPage() {
                         <div className="flex justify-end gap-1 sm:gap-2">
                           <button
                             onClick={() => handleEdit(product)}
-                            className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                            title="Edit product"
+                            className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-900"
                           >
                             <Pencil size={17} />
                           </button>
@@ -318,7 +324,8 @@ export default function ProductsPage() {
                                 deleteProduct(product.id);
                               }
                             }}
-                            className="rounded-lg p-2 text-gray-500 hover:bg-red-50 hover:text-red-600"
+                            title="Delete product"
+                            className="rounded-lg p-2 text-gray-500 transition hover:bg-red-50 hover:text-red-600"
                           >
                             <Trash2 size={17} />
                           </button>
