@@ -40,14 +40,9 @@ export default function DashboardPage() {
         0
     );
 
-    /*
-     * This is called after the user clicks
-     * "Generate Invoice".
-     */
     const handleGenerateInvoice = (invoiceItem) => {
         const invoice = createInvoice(invoiceItem);
 
-        // Store only the selected invoice ID.
         localStorage.setItem(
             "selected_invoice_id",
             invoice.id
@@ -58,10 +53,10 @@ export default function DashboardPage() {
 
     return (
         <div className="min-h-screen">
-            {/* Header */}
-            <header className="flex items-center justify-between border-b border-gray-200 bg-white px-8 py-5">
+            {/* Header - Responsive Padding & Flex Wrap */}
+            <header className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 bg-white px-4 py-4 sm:px-8 sm:py-5">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">
+                    <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
                         Dashboard
                     </h1>
 
@@ -72,16 +67,17 @@ export default function DashboardPage() {
 
                 <a
                     href="/products"
-                    className="flex items-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+                    className="flex items-center gap-2 rounded-xl bg-black px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800 sm:px-5 sm:py-3"
                 >
                     <Plus size={18} />
                     Add Product
                 </a>
             </header>
 
-            <div className="p-8">
-                {/* Stats */}
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {/* Main Content - Responsive Padding */}
+            <div className="p-4 sm:p-8">
+                {/* Stats - sm:grid-cols-3 for better tablet view */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5">
                     <StatCard
                         title="Total Products"
                         value={totalProducts}
@@ -103,7 +99,8 @@ export default function DashboardPage() {
 
                 {/* Products */}
                 <section className="mt-8">
-                    <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    {/* Responsive Flex Direction */}
+                    <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <h2 className="text-lg font-bold text-gray-900">
                                 Products
@@ -114,8 +111,8 @@ export default function DashboardPage() {
                             </p>
                         </div>
 
-                        {/* Search */}
-                        <div className="relative">
+                        {/* Search - sm:w-72 instead of md:w-72 */}
+                        <div className="relative w-full sm:w-72">
                             <Search
                                 size={18}
                                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -126,7 +123,7 @@ export default function DashboardPage() {
                                 placeholder="Search products..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-gray-400 md:w-72"
+                                className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-gray-400"
                             />
                         </div>
                     </div>
@@ -134,7 +131,7 @@ export default function DashboardPage() {
                     {filteredProducts.length === 0 ? (
                         <EmptyState />
                     ) : (
-                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
                             {filteredProducts.map((product) => (
                                 <ProductCard
                                     key={product.id}
@@ -159,27 +156,21 @@ export default function DashboardPage() {
     );
 }
 
-function generateInvoiceNumber() {
-    const timestamp = Date.now();
-
-    return `INV-${timestamp}`;
-}
-
 function StatCard({ title, value, icon: Icon }) {
     return (
-        <div className="rounded-2xl border border-gray-200 bg-white p-5">
+        <div className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5">
             <div className="flex items-center justify-between">
-                <div>
+                <div className="min-w-0 flex-1"> {/* min-w-0 for text truncation if needed */}
                     <p className="text-sm text-gray-500">
                         {title}
                     </p>
 
-                    <p className="mt-2 text-2xl font-bold text-gray-900">
+                    <p className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl truncate">
                         {value}
                     </p>
                 </div>
 
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-100">
+                <div className="ml-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100">
                     <Icon size={21} className="text-gray-700" />
                 </div>
             </div>
@@ -195,12 +186,12 @@ function ProductCard({ product, onClick }) {
             type="button"
             disabled={outOfStock}
             onClick={onClick}
-            className="group text-left disabled:cursor-not-allowed"
+            className="group w-full text-left disabled:cursor-not-allowed"
         >
             <div
-                className={`rounded-2xl border bg-white p-5 transition ${outOfStock
-                        ? "border-gray-200 opacity-60"
-                        : "border-gray-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-lg"
+                className={`rounded-2xl border bg-white p-4 transition sm:p-5 ${outOfStock
+                    ? "border-gray-200 opacity-60"
+                    : "border-gray-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-lg"
                     }`}
             >
                 <div className="flex items-start justify-between">
@@ -213,15 +204,15 @@ function ProductCard({ product, onClick }) {
 
                     <span
                         className={`rounded-full px-3 py-1 text-xs font-semibold ${outOfStock
-                                ? "bg-red-50 text-red-700"
-                                : "bg-green-50 text-green-700"
+                            ? "bg-red-50 text-red-700"
+                            : "bg-green-50 text-green-700"
                             }`}
                     >
                         {outOfStock ? "Out of Stock" : "In Stock"}
                     </span>
                 </div>
 
-                <h3 className="mt-5 font-semibold text-gray-900">
+                <h3 className="mt-4 font-semibold text-gray-900 sm:mt-5">
                     {product.name}
                 </h3>
 
@@ -248,9 +239,9 @@ function ProductCard({ product, onClick }) {
                 </div>
 
                 <div
-                    className={`mt-5 flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition ${outOfStock
-                            ? "bg-gray-100 text-gray-400"
-                            : "bg-gray-100 text-gray-700 group-hover:bg-black group-hover:text-white"
+                    className={`mt-4 flex items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold transition sm:mt-5 sm:py-3 ${outOfStock
+                        ? "bg-gray-100 text-gray-400"
+                        : "bg-gray-100 text-gray-700 group-hover:bg-black group-hover:text-white"
                         }`}
                 >
                     <ShoppingCart size={17} />
@@ -266,7 +257,7 @@ function ProductCard({ product, onClick }) {
 
 function EmptyState() {
     return (
-        <div className="rounded-2xl border border-dashed border-gray-300 bg-white py-20 text-center">
+        <div className="rounded-2xl border border-dashed border-gray-300 bg-white py-16 text-center sm:py-20">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100">
                 <Package
                     size={25}
@@ -284,7 +275,7 @@ function EmptyState() {
 
             <a
                 href="/products"
-                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
             >
                 <Plus size={17} />
                 Add Product

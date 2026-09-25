@@ -97,9 +97,9 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="border-b border-gray-200 bg-white px-8 py-5">
-        <h1 className="text-2xl font-bold text-gray-900">
+      {/* Header - Responsive Padding & Text */}
+      <header className="border-b border-gray-200 bg-white px-4 py-4 sm:px-8 sm:py-5">
+        <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
           Products
         </h1>
 
@@ -108,19 +108,18 @@ export default function ProductsPage() {
         </p>
       </header>
 
-      <div className="p-8">
+      {/* Main Content - Responsive Padding */}
+      <div className="p-4 sm:p-8">
         {/* Add Product */}
-        <div className="rounded-2xl border border-gray-200 bg-white p-6">
-          <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100">
+        <div className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6">
+          <div className="mb-4 flex items-center gap-3 sm:mb-6">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100">
               <Plus size={20} />
             </div>
 
             <div>
               <h2 className="font-bold text-gray-900">
-                {editingId
-                  ? "Edit Product"
-                  : "Add Product"}
+                {editingId ? "Edit Product" : "Add Product"}
               </h2>
 
               <p className="text-sm text-gray-500">
@@ -129,9 +128,10 @@ export default function ProductsPage() {
             </div>
           </div>
 
+          {/* Form Grid - 1 col mobile, 2 col tablet, 4 col desktop */}
           <form
             onSubmit={handleSubmit}
-            className="grid grid-cols-1 gap-5 md:grid-cols-4"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4"
           >
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -193,23 +193,21 @@ export default function ProductsPage() {
               />
             </div>
 
-            <div className="flex items-end gap-3">
+            {/* Buttons - Stack on mobile, row on larger screens */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
               <button
                 type="submit"
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white hover:bg-gray-800"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white hover:bg-gray-800 sm:flex-1"
               >
                 <Plus size={18} />
-
-                {editingId
-                  ? "Update Product"
-                  : "Add Product"}
+                {editingId ? "Update Product" : "Add Product"}
               </button>
 
               {editingId && (
                 <button
                   type="button"
                   onClick={cancelEdit}
-                  className="rounded-xl border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                  className="w-full rounded-xl border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 sm:w-auto"
                 >
                   Cancel
                 </button>
@@ -219,11 +217,9 @@ export default function ProductsPage() {
         </div>
 
         {/* Product Table */}
-        <div className="mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-white">
-          <div className="border-b border-gray-200 px-6 py-5">
-            <h2 className="font-bold text-gray-900">
-              All Products
-            </h2>
+        <div className="mt-6 overflow-hidden rounded-2xl border border-gray-200 bg-white sm:mt-8">
+          <div className="border-b border-gray-200 px-4 py-4 sm:px-6 sm:py-5">
+            <h2 className="font-bold text-gray-900">All Products</h2>
 
             <p className="mt-1 text-sm text-gray-500">
               {products.length} product
@@ -233,10 +229,7 @@ export default function ProductsPage() {
 
           {products.length === 0 ? (
             <div className="py-16 text-center">
-              <Package
-                size={35}
-                className="mx-auto text-gray-300"
-              />
+              <Package size={35} className="mx-auto text-gray-300" />
 
               <p className="mt-3 text-sm text-gray-500">
                 No products added yet.
@@ -244,26 +237,28 @@ export default function ProductsPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              {/* whitespace-nowrap prevents text from breaking awkwardly */}
+              <table className="w-full whitespace-nowrap">
                 <thead>
                   <tr className="border-b border-gray-200 bg-gray-50 text-left">
-                    <th className="px-6 py-4 text-xs font-semibold uppercase text-gray-500">
+                    <th className="px-4 py-3 text-xs font-semibold uppercase text-gray-500 sm:px-6 sm:py-4">
                       Product
                     </th>
 
-                    <th className="px-6 py-4 text-xs font-semibold uppercase text-gray-500">
+                    <th className="px-4 py-3 text-xs font-semibold uppercase text-gray-500 sm:px-6 sm:py-4">
                       Price
                     </th>
 
-                    <th className="px-6 py-4 text-xs font-semibold uppercase text-gray-500">
+                    <th className="px-4 py-3 text-xs font-semibold uppercase text-gray-500 sm:px-6 sm:py-4">
                       Quantity
                     </th>
 
-                    <th className="px-6 py-4 text-xs font-semibold uppercase text-gray-500">
+                    {/* Hide Value column on mobile (hidden md:table-cell) */}
+                    <th className="hidden px-4 py-3 text-xs font-semibold uppercase text-gray-500 md:table-cell sm:px-6 sm:py-4">
                       Value
                     </th>
 
-                    <th className="px-6 py-4 text-right text-xs font-semibold uppercase text-gray-500">
+                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase text-gray-500 sm:px-6 sm:py-4">
                       Actions
                     </th>
                   </tr>
@@ -275,9 +270,9 @@ export default function ProductsPage() {
                       key={product.id}
                       className="border-b border-gray-100 last:border-0"
                     >
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3 sm:px-6 sm:py-4">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 sm:h-10 sm:w-10">
                             <Package size={18} />
                           </div>
 
@@ -287,31 +282,27 @@ export default function ProductsPage() {
                         </div>
                       </td>
 
-                      <td className="px-6 py-4 text-sm font-medium">
+                      <td className="px-4 py-3 text-sm font-medium sm:px-6 sm:py-4">
                         ₹
-                        {product.price.toLocaleString(
+                        {product.price.toLocaleString("en-IN")}
+                      </td>
+
+                      <td className="px-4 py-3 text-sm sm:px-6 sm:py-4">
+                        {product.quantity}
+                      </td>
+
+                      {/* Hide Value column on mobile */}
+                      <td className="hidden px-4 py-3 text-sm font-medium md:table-cell sm:px-6 sm:py-4">
+                        ₹
+                        {(product.price * product.quantity).toLocaleString(
                           "en-IN"
                         )}
                       </td>
 
-                      <td className="px-6 py-4 text-sm">
-                        {product.quantity}
-                      </td>
-
-                      <td className="px-6 py-4 text-sm font-medium">
-                        ₹
-                        {(
-                          product.price *
-                          product.quantity
-                        ).toLocaleString("en-IN")}
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <div className="flex justify-end gap-2">
+                      <td className="px-4 py-3 sm:px-6 sm:py-4">
+                        <div className="flex justify-end gap-1 sm:gap-2">
                           <button
-                            onClick={() =>
-                              handleEdit(product)
-                            }
+                            onClick={() => handleEdit(product)}
                             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                           >
                             <Pencil size={17} />
@@ -319,15 +310,12 @@ export default function ProductsPage() {
 
                           <button
                             onClick={() => {
-                              const confirmed =
-                                window.confirm(
-                                  `Delete ${product.name}?`
-                                );
+                              const confirmed = window.confirm(
+                                `Delete ${product.name}?`
+                              );
 
                               if (confirmed) {
-                                deleteProduct(
-                                  product.id
-                                );
+                                deleteProduct(product.id);
                               }
                             }}
                             className="rounded-lg p-2 text-gray-500 hover:bg-red-50 hover:text-red-600"
