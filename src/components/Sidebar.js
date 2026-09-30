@@ -25,6 +25,11 @@ const menuItems = [
     icon: Package,
   },
   {
+    name: "Stock",
+    href: "/stock",
+    icon: Boxes,
+  },
+  {
     name: "Invoices",
     href: "/invoices",
     icon: Receipt,
@@ -39,6 +44,13 @@ const menuItems = [
 export default function Sidebar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("current_user");
+
+    window.location.href = "/login";
+  };
 
   return (
     <>
@@ -70,8 +82,9 @@ export default function Sidebar() {
 
       {/* 3. Main Sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-64 flex-col border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        className={`fixed left-0 top-0 z-50 flex h-screen w-64 flex-col border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
         {/* Close Button for Mobile */}
         <button
@@ -106,10 +119,11 @@ export default function Sidebar() {
                 href={item.href}
                 // Close sidebar on click in mobile
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${active
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
+                  active
                     ? "bg-black text-white"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                  }`}
+                }`}
               >
                 <Icon size={19} />
                 {item.name}
@@ -121,12 +135,12 @@ export default function Sidebar() {
         {/* Bottom */}
         <div className="border-t border-gray-200 p-4">
           <div className="rounded-xl bg-gray-50 p-4">
-            <p className="text-xs font-medium text-gray-500">
-              Billing Software
-            </p>
-            <p className="mt-1 text-sm font-semibold text-gray-900">
-              Local Mode
-            </p>
+            <button
+              onClick={handleLogout}
+              className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-red-600 transition hover:bg-red-50"
+            >
+              Logout
+            </button>
           </div>
         </div>
       </aside>

@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Plus,
-  Package,
-  Trash2,
-  Pencil,
-} from "lucide-react";
+import { Plus, Package, Trash2, Pencil } from "lucide-react";
 
 import { useBilling } from "../../context/BillingContext";
 
@@ -16,8 +11,8 @@ export default function ProductsPage() {
     addProduct,
     updateProduct,
     deleteProduct,
+    productsLoading,
   } = useBilling();
-
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -26,7 +21,7 @@ export default function ProductsPage() {
 
   const [editingId, setEditingId] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.name.trim()) {
@@ -39,35 +34,48 @@ export default function ProductsPage() {
       return;
     }
 
-    if (
-      form.quantity === "" ||
-      Number(form.quantity) < 0
-    ) {
+    if (form.quantity === "" || Number(form.quantity) < 0) {
       alert("Please enter a valid quantity.");
       return;
     }
 
-    if (editingId) {
-      updateProduct(editingId, {
-        name: form.name.trim(),
-        price: Number(form.price),
-        quantity: Number(form.quantity),
-      });
+    try {
+      if (editingId) {
+        await updateProduct(editingId, {
+          name: form.name.trim(),
+          price: Number(form.price),
+          quantity: Number(form.quantity),
+        });
 
-      setEditingId(null);
-    } else {
-      addProduct({
-        name: form.name.trim(),
-        price: Number(form.price),
-        quantity: Number(form.quantity),
+        setEditingId(null);
+      } else {
+        await addProduct({
+          name: form.name.trim(),
+          price: Number(form.price),
+          quantity: Number(form.quantity),
+        });
+      }
+
+      setForm({
+        name: "",
+        price: "",
+        quantity: "",
       });
+    } catch (error) {
+      alert(error.message || "Something went wrong.");
     }
+  };
 
-    setForm({
-      name: "",
-      price: "",
-      quantity: "",
-    });
+  const handleDelete = async (product) => {
+    const confirmed = window.confirm(`Delete ${product.name}?`);
+
+    if (!confirmed) return;
+
+    try {
+      await deleteProduct(product._id || product.id);
+    } catch (error) {
+      alert(error.message || "Failed to delete product.");
+    }
   };
 
   const handleEdit = (product) => {
@@ -98,7 +106,6 @@ export default function ProductsPage() {
   return (
     // 1. Added bg-gray-50 for consistency with other pages
     <div className="min-h-screen bg-gray-50">
-      
       {/* Header - Full width background, centered content inside */}
       <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-8 sm:py-5">
@@ -114,7 +121,6 @@ export default function ProductsPage() {
 
       {/* Main Content - Centered max-width for ultra-wide screens */}
       <div className="mx-auto max-w-7xl p-4 sm:p-8">
-        
         {/* Add Product */}
         <div className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6">
           <div className="mb-4 flex items-center gap-3 sm:mb-6">
@@ -288,8 +294,7 @@ export default function ProductsPage() {
                       </td>
 
                       <td className="px-4 py-3 text-sm font-medium sm:px-6 sm:py-4">
-                        ₹
-                        {product.price.toLocaleString("en-IN")}
+                        ₹{product.price.toLocaleString("en-IN")}
                       </td>
 
                       <td className="px-4 py-3 text-sm sm:px-6 sm:py-4">
@@ -300,7 +305,7 @@ export default function ProductsPage() {
                       <td className="hidden px-4 py-3 text-sm font-medium md:table-cell sm:px-6 sm:py-4">
                         ₹
                         {(product.price * product.quantity).toLocaleString(
-                          "en-IN"
+                          "en-IN",
                         )}
                       </td>
 
@@ -315,15 +320,7 @@ export default function ProductsPage() {
                           </button>
 
                           <button
-                            onClick={() => {
-                              const confirmed = window.confirm(
-                                `Delete ${product.name}?`
-                              );
-
-                              if (confirmed) {
-                                deleteProduct(product.id);
-                              }
-                            }}
+                            onClick={() => handleDelete(product)}
                             title="Delete product"
                             className="rounded-lg p-2 text-gray-500 transition hover:bg-red-50 hover:text-red-600"
                           >
